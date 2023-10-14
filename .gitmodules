@@ -1,3 +1,9 @@
+[submodule "BodegaService"]
+	path = BodegaService
+	url = git@github.com:JuanGuauque/BodegaService.git
+[submodule "PlazaMercadoService"]
+	path = PlazaMercadoService
+	url = git@github.com:JuanGuauque/PlazaMercadoService.git
 [submodule "PedidosService"]
 	path = PedidosService
 	url = git@github.com:JuanGuauque/PedidosService.git
