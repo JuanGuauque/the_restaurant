@@ -1,0 +1,73 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: melius
+      POSTGRES_DB: the_restaurant_development
+    networks:
+      - my_network
+
+  bodegaservice:
+    build:
+      context: ./BodegaService
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3000"  # Corregido para mapear al puerto 3001 del contenedor
+    restart: always
+    depends_on:
+      - postgres  # Indica la dependencia de PostgreSQL
+    command: sh -c "sleep 10 && rails db:migrate && rails db:seed && rails s -b 0.0.0.0"
+    volumes:
+      - ./BodegaService:/app
+    networks:
+      - my_network
+
+  plazamercadoservice:
+    build:
+      context: ./PlazaMercadoService
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3000"
+    restart: always
+    depends_on:
+      - postgres  # Indica la dependencia de PostgreSQL
+    command: sh -c "sleep 20 && rails db:migrate && rails db:seed && rails s -b 0.0.0.0"
+    volumes:
+      - ./PlazaMercadoService:/app
+    networks:
+      - my_network
+
+  pedidosservice:
+    build:
+      context: ./PedidosService
+      dockerfile: Dockerfile
+    ports:
+      - "3003:3000"
+    restart: always
+    depends_on:
+      - postgres  # Indica la dependencia de PostgreSQL
+    command: sh -c "sleep 30 && rails db:migrate && rails db:seed && rails s -b 0.0.0.0"
+    volumes:
+      - ./PedidosService:/app
+    networks:
+      - my_network
+
+  therestaurantservice:
+    build:
+      context: ./TheRestaurantService
+      dockerfile: Dockerfile
+    ports:
+      - "3004:3000"
+    entrypoint: ["rails", "server", "-b", "0.0.0.0", "-p", "3000"]
+    restart: always
+    volumes:
+      - ./TheRestaurantService:/app
+    networks:
+      - my_network
+
+networks:
+  my_network:
+    driver: bridge

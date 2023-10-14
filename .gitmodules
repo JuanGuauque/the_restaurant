@@ -1,0 +1,6 @@
+[submodule "PedidosService"]
+	path = PedidosService
+	url = git@github.com:JuanGuauque/PedidosService.git
+[submodule "TheRestaurantService"]
+	path = TheRestaurantService
+	url = git@github.com:JuanGuauque/TheRestaurantService.git
